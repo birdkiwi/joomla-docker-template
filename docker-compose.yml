@@ -1,0 +1,67 @@
+version: '3.7'
+
+services:
+  nginx:
+    container_name: ${PROJECT_TAG}_nginx
+    image: nginx:alpine
+    restart: always
+    ports:
+      - ${NGINX_PORT}:80
+      - ${NGINX_HTTPS_PORT}:443
+    volumes:
+      - ./joomla:/var/www/html
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./docker/certbot/www/:/var/www/certbot/:ro
+      - ./docker/certbot/conf/:/etc/nginx/ssl/:ro
+    depends_on:
+      - mariadb
+      - joomla
+
+  certbot:
+    container_name: ${PROJECT_TAG}_certbot
+    image: certbot/certbot:latest
+    volumes:
+      - ./docker/certbot/www/:/var/www/certbot/:rw
+      - ./docker/certbot/conf/:/etc/letsencrypt/:rw
+
+  joomla:
+    container_name: ${PROJECT_TAG}_joomla
+    restart: always
+    build:
+      context: ./
+      dockerfile: ./docker/Dockerfile
+      args:
+        LOCAL_USER_ID: $UID
+        LOCAL_GROUP_ID: $GID
+    volumes:
+      - ./joomla:/var/www/html
+      - ./docker/joomla_php.ini:/usr/local/etc/php/conf.d/joomla_php.ini
+    depends_on:
+      - mariadb
+
+  mariadb:
+    container_name: ${PROJECT_TAG}_maria
+    restart: always
+    image: mariadb:11.2
+    ports:
+      - ${MARIADB_PORT}:3306
+    environment:
+      - MARIADB_ALLOW_EMPTY_ROOT_PASSWORD=${MARIADB_ALLOW_EMPTY_ROOT_PASSWORD}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+    volumes:
+      - database:/var/lib/mysql
+
+  adminer:
+    container_name: ${PROJECT_TAG}_adminer
+    image: adminer
+    restart: always
+    ports:
+      - ${ADMINER_PORT}:8080
+    depends_on:
+      - mariadb
+
+volumes:
+  database:
+    name: database_viva
