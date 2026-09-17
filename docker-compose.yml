@@ -55,6 +55,7 @@ services:
     container_name: ${PROJECT_TAG}_adminer
     image: adminer
     restart: always
+    profiles: [tools]
     ports:
       - ${ADMINER_PORT}:8080
     depends_on:

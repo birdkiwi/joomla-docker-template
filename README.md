@@ -4,10 +4,10 @@ Joomla website is running in Docker environment.
 
 ### Stack
 - PHP 8.4.3 (FPM)
-- Joomla 5
+- Joomla 6
 - Nginx
 - Maria DB 11.2
-- Adminer
+- Adminer (optional)
 
 ### Quick start
 
@@ -16,7 +16,17 @@ Joomla website is running in Docker environment.
 - Copy `.env.example` to `.env`, edit
 - `docker compose up -d`
 
+### Optional Adminer
 
+Adminer runs under the `tools` Compose profile, so it starts only when that
+profile is active. `COMPOSE_PROFILES=tools` in `.env` turns it on; an empty or
+missing value leaves it out, which is what you usually want in production.
+
+Start it once without changing `.env`:
+
+```shell
+docker compose up -d adminer
+```
 
 ### How to renew Let's encrypt certificate
 
