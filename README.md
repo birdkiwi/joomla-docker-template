@@ -3,7 +3,7 @@
 Joomla website is running in Docker environment.
 
 ### Stack
-- PHP 8.3.1
+- PHP 8.4.3 (FPM)
 - Joomla 5
 - Nginx
 - Maria DB 11.2
@@ -18,7 +18,7 @@ Joomla website is running in Docker environment.
 
 
 
-### Hot to renew Let's encrypt certificate
+### How to renew Let's encrypt certificate
 
 Docker-compose already has certbot container you can use, just execute:
 
