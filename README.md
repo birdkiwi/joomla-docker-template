@@ -28,6 +28,13 @@ Start it once without changing `.env`:
 docker compose up -d adminer
 ```
 
+Adminer and MariaDB listen on `127.0.0.1` only. On a remote server, reach
+them through an SSH tunnel:
+
+```shell
+ssh -L 8090:127.0.0.1:8090 user@server   # then open http://localhost:8090
+```
+
 ### How to renew Let's encrypt certificate
 
 Docker-compose already has certbot container you can use, just execute:
