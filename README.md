@@ -3,7 +3,7 @@
 Joomla website is running in Docker environment.
 
 ### Stack
-- PHP 8.4.3 (FPM)
+- PHP 8.4 (FPM)
 - Joomla 6
 - Nginx
 - Maria DB 11.2
